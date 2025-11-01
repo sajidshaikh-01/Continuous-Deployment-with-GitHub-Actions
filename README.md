@@ -1,60 +1,26 @@
-#  Continuous Deployment with GitHub Actions
+# 🚀 Production-Ready CI/CD Pipeline with GitHub Actions, ArgoCD & EKS
 
-This repository contains everything I learned about **Continuous Deployment (CD)** using **GitHub Actions**.
-
----
-
-## 📚 What I Learned
-
-- How Continuous Deployment works in a real pipeline
-- Setting up GitHub Actions workflows for deployment
-- Using environments (development, staging, production)
-- Storing and using environment-specific secrets
-- Deploying automatically when changes are pushed to `main` branch
-- Using Argo CD / Kubernetes for GitOps-based deployment
+This repository demonstrates a **complete CI/CD workflow** for a containerized application deployed on **Amazon EKS (Elastic Kubernetes Service)** using **GitHub Actions** for automation and **ArgoCD** for GitOps-based Continuous Deployment.
 
 ---
 
-## ⚙️ Repository Structure
+## 🧩 Architecture Overview
 
 
----
+### ⚙️ CI/CD Flow
+1. **CI Pipeline**
+   - Triggered when code is pushed to the `main` branch.
+   - Builds a Docker image.
+   - Pushes the image to Docker Hub (or any registry).
+   - Updates the Kubernetes manifests with the new image tag.
 
-## 🧩 Workflow Overview
-
-The pipeline runs on every push to the `main` branch:
-1. Checks out code  
-2. Installs dependencies  
-3. Builds the project  
-4. Deploys automatically to the production environment  
-
----
-
-## 🧠 Next Steps
-
-- Add real Argo CD integration (instead of echo)
-- Add separate environments (dev/staging/prod)
-- Add approval workflow for production
-- Integrate Kubernetes and EKS deployment
+2. **CD Pipeline**
+   - Triggered automatically after the CI pipeline completes.
+   - Connects to **ArgoCD** using CLI and credentials.
+   - Syncs the ArgoCD application with the latest manifests.
+   - Deploys the new version to **EKS** automatically.
 
 ---
 
-## 🧰 Technologies Used
+## 🧱 Repository Structure
 
-- GitHub Actions  
-- YAML  
-- Node.js (example app)  
-- Kubernetes / Argo CD (for future deployments)
-
----
-
-## 🏁 How to Run
-
-1. Clone the repository  
-2. Modify `cd-pipeline.yml` as per your project setup  
-3. Commit and push changes to the `main` branch  
-4. GitHub Actions will automatically deploy the app  
-
----
-
-> 🧠 **Tip:** Always keep your secrets safe using GitHub Environments → Secrets.
