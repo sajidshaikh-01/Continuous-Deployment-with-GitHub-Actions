@@ -22,11 +22,22 @@ This repository demonstrates a **complete CI/CD workflow** for a containerized a
 
 ---
 
-GitHub Secrets Required
-Secret Name	Description
-DOCKERHUB_USERNAME	Docker Hub username
-DOCKERHUB_TOKEN	Docker Hub access token
-ARGOCD_SERVER	ArgoCD API endpoint (e.g. argocd.example.com)
-ARGOCD_USERNAME	ArgoCD login username
-ARGOCD_PASSWORD	ArgoCD login password or API token
 
+┌───────────────┐       ┌────────────┐        ┌──────────────┐
+│   Developer    │ ---> │ GitHub CI  │ --->   │ Docker Hub   │
+└───────────────┘       └────────────┘        └──────────────┘
+                             │
+                             ▼
+                       ┌────────────┐
+                       │ GitOps Repo│
+                       └────────────┘
+                             │
+                             ▼
+                       ┌────────────┐
+                       │  Argo CD   │
+                       └────────────┘
+                             │
+                             ▼
+                       ┌────────────┐
+                       │    EKS     │
+                       └────────────┘
