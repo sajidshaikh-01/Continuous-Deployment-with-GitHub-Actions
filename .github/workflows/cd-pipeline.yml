@@ -1,39 +1,43 @@
-name: Continuous Deployment with GitHub Actions
+name: CD - Deploy via ArgoCD
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["CI - Build and Push Docker Image"]
+    types:
+      - completed
 
 jobs:
   deploy:
-    name: Deploy Application
     runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: https://your-app-url.com  # optional
-
     steps:
-      # Step 1: Checkout the repository
-      - name: Checkout code
+      # Checkout the repo with manifests (GitOps repo)
+      - name: Checkout manifests repo
         uses: actions/checkout@v4
-
-      # Step 2: Set up Node.js (or change if your project uses another runtime)
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          repository: your-username/k8s-manifests
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: manifests
 
-      # Step 3: Install dependencies (example for Node)
-      - name: Install dependencies
-        run: npm install
-
-      # Step 4: Run build
-      - name: Build project
-        run: npm run build
-
-      # Step 5: Deploy to Kubernetes or Argo CD (example placeholder)
-      - name: Deploy using Argo CD
+      # Setup ArgoCD CLI
+      - name: Install ArgoCD CLI
         run: |
-          echo "Simulating CD Deployment..."
-          echo "App successfully deployed to production!"
+          curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+          chmod +x /usr/local/bin/argocd
+
+      # Login to ArgoCD (using API endpoint and auth token)
+      - name: Login to ArgoCD
+        run: |
+          argocd login ${{ secrets.ARGOCD_SERVER }} \
+            --username ${{ secrets.ARGOCD_USERNAME }} \
+            --password ${{ secrets.ARGOCD_PASSWORD }} \
+            --insecure
+
+      # Sync ArgoCD application
+      - name: Sync ArgoCD Application
+        run: |
+          argocd app sync myapp --server ${{ secrets.ARGOCD_SERVER }} --insecure
+
+      # Check sync and health status
+      - name: Verify deployment
+        run: |
+          argocd app wait myapp --health --timeout 300 --server ${{ secrets.ARGOCD_SERVER }} --insecure
