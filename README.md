@@ -22,5 +22,4 @@ This repository demonstrates a **complete CI/CD workflow** for a containerized a
 
 ---
 
-## 🧱 Repository Structure
 
