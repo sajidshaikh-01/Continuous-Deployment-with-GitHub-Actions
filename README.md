@@ -31,32 +31,6 @@ This repository demonstrates a **complete CI/CD workflow** for a containerized a
 
 
 
-┌───────────────┐       ┌────────────┐        ┌──────────────┐
-│   Developer    │ ---> │ GitHub CI  │ --->   │ Docker Hub   │
-└───────────────┘       └────────────┘        └──────────────┘
-                             │
-                             ▼
-                       ┌────────────┐
-                       │ GitOps Repo│
-                       └────────────┘
-                             │
-                             ▼
-                       ┌────────────┐
-                       │  Argo CD   │
-                       └────────────┘
-                             │
-                             ▼
-                       ┌────────────┐
-                       │    EKS     │
-                       └────────────┘
-
-
-
-
-
-
-
-
 
 
 
